@@ -39,17 +39,17 @@ rm -rf %{buildroot}
 
 %qmake5_install
 
-desktop-file-install --delete-original       \
-  --dir %{buildroot}%{_datadir}/applications             \
-   %{buildroot}%{_datadir}/applications/*.desktop
-
 %preun
 DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/100000/dbus/user_bus_socket" \
   dbus-send --type=method_call --dest=com.kimmoli.callflasher / com.kimmoli.callflasher.quit
+systemctl-user disable harbour-callflasher
 
 %post
 DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/100000/dbus/user_bus_socket" \
   dbus-send --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+systemctl-user enable harbour-callflasher
+DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/100000/dbus/user_bus_socket" \
+  dbus-send --type=method_call --dest=com.kimmoli.callflasher / com.kimmoli.callflasher.enable
 
 %postun
 DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/100000/dbus/user_bus_socket" \
@@ -66,6 +66,5 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/%{name}
 %{_datadir}/dbus-1/
-%{_datadir}/applications/
-%{_datadir}/icons/hicolor/86x86/apps/
+/etc/systemd/user/
 

@@ -1,6 +1,0 @@
-[Desktop Entry]
-Type=Application
-X-Nemo-Application-Type=no-invoker
-Name=Call flasher
-Icon=harbour-callflasher
-Exec=dbus-send --session --type=method_call --dest=com.kimmoli.callflasher / com.kimmoli.callflasher.toggle

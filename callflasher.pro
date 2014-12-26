@@ -16,16 +16,13 @@ target.path = /usr/bin/
 dbusService.files = config/com.kimmoli.callflasher.service
 dbusService.path = /usr/share/dbus-1/services/
 
+systemduser.files = config/harbour-callflasher.service
+systemduser.path = /etc/systemd/user/
+
 dbusInterface.files = config/com.kimmoli.callflasher.xml
 dbusInterface.path = /usr/share/dbus-1/interfaces/
 
-desktop.files = config/harbour-callflasher.desktop
-desktop.path = /usr/share/applications/
-
-icon.files = config/harbour-callflasher.png
-icon.path = /usr/share/icons/hicolor/86x86/apps/
-
-INSTALLS += target dbusService dbusInterface desktop icon
+INSTALLS += target dbusService dbusInterface systemduser
 
 message($${DEFINES})
 
@@ -38,8 +35,7 @@ OTHER_FILES += \
     rpm/$${TARGET}.spec \
     config/com.kimmoli.callflasher.service \
     config/com.kimmoli.callflasher.xml \
-    config/harbour-callflasher.png \
-    config/harbour-callflasher.desktop
+    config/harbour-callflasher.service
 
 HEADERS += \
     src/adaptor.h \

@@ -1,0 +1,9 @@
+[Unit]
+Description=Call flasher
+After=user-session.target
+
+[Service]
+ExecStart=/usr/bin/harbour-callflasher
+
+[Install]
+WantedBy=post-user-session.target
