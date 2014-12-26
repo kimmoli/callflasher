@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.kimmoli.callflasher
+Exec=/usr/bin/harbour-callflasher
