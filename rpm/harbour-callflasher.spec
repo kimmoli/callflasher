@@ -40,26 +40,17 @@ rm -rf %{buildroot}
 %qmake5_install
 
 %preun
-DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/100000/dbus/user_bus_socket" \
-  dbus-send --type=method_call --dest=com.kimmoli.callflasher / com.kimmoli.callflasher.quit
+systemctl-user stop harbour-callflasher
 systemctl-user disable harbour-callflasher
 
 %post
-DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/100000/dbus/user_bus_socket" \
-  dbus-send --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+systemctl-user start harbour-callflasher
 systemctl-user enable harbour-callflasher
-DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/100000/dbus/user_bus_socket" \
-  dbus-send --type=method_call --dest=com.kimmoli.callflasher / com.kimmoli.callflasher.enable
-
-%postun
-DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/100000/dbus/user_bus_socket" \
-  dbus-send --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 
 %pre
 # In case of update, stop first
 if [ "$1" = "2" ]; then
-  DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/100000/dbus/user_bus_socket" \
-    dbus-send --type=method_call --dest=com.kimmoli.callflasher / com.kimmoli.callflasher.quit
+  systemctl-user stop harbour-callflasher
 fi
 
 %files
