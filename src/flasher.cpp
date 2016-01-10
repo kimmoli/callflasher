@@ -2,6 +2,7 @@
 #include "flasher.h"
 #include <sys/ioctl.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 static const char *SERVICE = SERVICE_NAME;
 static const char *PATH = "/";
