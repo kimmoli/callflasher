@@ -11,7 +11,7 @@ system(qdbusxml2cpp config/com.kimmoli.callflasher.xml -i src/flasher.h -a src/a
 
 DEFINES += "APPVERSION=\\\"$${SPECVERSION}\\\""
 
-target.path = /usr/bin/
+target.path = /usr/bin
 
 dbusService.files = config/com.kimmoli.callflasher.service
 dbusService.path = /usr/share/dbus-1/services/
