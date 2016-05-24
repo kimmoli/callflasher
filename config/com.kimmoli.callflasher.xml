@@ -3,6 +3,7 @@
     <interface name="com.kimmoli.callflasher">
         <method name="enable" />
         <method name="toggle" />
+        <method name="test" />
         <method name="quit" />
     </interface>
 </node>

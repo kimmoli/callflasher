@@ -33,7 +33,14 @@ Flasher::~Flasher()
     }
 }
 
-void Flasher::registerDBus()
+void Flasher::setPath(QString path, QString on, QString off)
+{
+    m_path = path;
+    m_on = on;
+    m_off = off;
+}
+
+bool Flasher::registerDBus()
 {
     if (!m_dbusRegistered)
     {
@@ -42,18 +49,19 @@ void Flasher::registerDBus()
         if (!connection.registerService(SERVICE))
         {
             QCoreApplication::quit();
-            return;
+            return false;
         }
 
         if (!connection.registerObject(PATH, this))
         {
             QCoreApplication::quit();
-            return;
+            return false;
         }
         m_dbusRegistered = true;
 
         printf("callflasher: succesfully registered to dbus sessionBus \"%s\"\n", SERVICE);
     }
+    return true;
 }
 
 void Flasher::quit()
@@ -84,6 +92,18 @@ void Flasher::toggle()
         printf("callflasher: disabled\n");
         showNotification("Call flasher disabled");
     }
+}
+
+void Flasher::test()
+{
+    if (m_blinkTimer->isActive())
+    {
+        m_blinkTimer->stop();
+        return;
+    }
+
+    if (m_enabled)
+        m_blinkTimer->start();
 }
 
 void Flasher::handleCall(const QDBusMessage & msg)
@@ -128,23 +148,23 @@ void Flasher::blinkTimerTimeout()
         return;
     }
 
-    int fd = open("/sys/kernel/debug/flash_adp1650/mode", O_WRONLY);
+    int fd = open(m_path.toLatin1().constData(), O_WRONLY);
 
     int tmp;
     Q_UNUSED(tmp);
 
     if (!(fd < 0))
     {
-        tmp = write (fd, "1", 1);
+        tmp = write (fd, m_on.toLatin1().constData(), m_on.length());
         close(fd);
     }
     QThread::msleep(10);
 
-    fd = open("/sys/kernel/debug/flash_adp1650/mode", O_WRONLY);
+    fd = open(m_path.toLatin1().constData(), O_WRONLY);
 
     if (!(fd < 0))
     {
-        tmp = write (fd, "0", 1);
+        tmp = write (fd, m_off.toLatin1().constData(), m_off.length());
         close(fd);
     }
 }

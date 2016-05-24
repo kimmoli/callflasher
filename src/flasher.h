@@ -19,12 +19,14 @@ class Flasher : public QObject
 public:
     explicit Flasher(QObject *parent = 0);
     virtual ~Flasher();
-    void registerDBus();
+    bool registerDBus();
     void showNotification(QString text);
+    void setPath(QString path, QString on, QString off);
 
 public slots:
     void enable();
     void toggle();
+    void test();
     void quit();
 
     void handleCall(const QDBusMessage&);
@@ -34,6 +36,9 @@ private:
     bool m_dbusRegistered;
     bool m_enabled;
     bool m_incomingCall;
+    QString m_path;
+    QString m_on;
+    QString m_off;
     QTimer *m_blinkTimer;
 
 };
